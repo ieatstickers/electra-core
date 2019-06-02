@@ -13,14 +13,14 @@ abstract class AbstractTask
    * @param AbstractPayload $payload
    * @return AbstractResponse
    */
-  abstract protected function process(AbstractPayload $payload): AbstractResponse;
+  abstract protected function process(AbstractPayload $payload);
 
   /**
    * @param AbstractPayload $payload
    * @return AbstractResponse
    * @throws \Exception
    */
-  public final function execute(AbstractPayload $payload): AbstractResponse
+  public final function execute(AbstractPayload $payload)
   {
     // If incorrect payload class has been passed in
     if (get_class($payload) !== $this->getPayloadClass())
