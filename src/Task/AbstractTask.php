@@ -11,13 +11,13 @@ abstract class AbstractTask
 
   /**
    * @param AbstractPayload $payload
-   * @return AbstractResponse
+   * @return mixed
    */
   abstract protected function process(AbstractPayload $payload);
 
   /**
    * @param AbstractPayload $payload
-   * @return AbstractResponse
+   * @return mixed
    * @throws \Exception
    */
   public final function execute(AbstractPayload $payload)
