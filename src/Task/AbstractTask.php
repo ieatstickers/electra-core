@@ -7,13 +7,7 @@ use Electra\Utility\Classes;
 abstract class AbstractTask
 {
   /** @return string */
-  abstract protected function getPayloadClass(): string;
-
-  /**
-   * @param AbstractPayload $payload
-   * @return mixed
-   */
-  abstract protected function process(AbstractPayload $payload);
+  abstract public function getPayloadClass(): string;
 
   /**
    * @param AbstractPayload $payload
@@ -36,4 +30,10 @@ abstract class AbstractTask
 
     return $this->process($payload);
   }
+
+  /**
+   * @param AbstractPayload $payload
+   * @return mixed
+   */
+  abstract protected function process(AbstractPayload $payload);
 }
