@@ -1,5 +1,6 @@
 {
-	"name": "electra-core",
+	"name": "electra/core",
+	"bin": ["bin/electra"],
 	"minimum-stability": "dev",
 	"authors": [
 		{
@@ -13,7 +14,8 @@
 		}
 	],
 	"require": {
-		"electra-utility": "dev-master"
+		"electra-utility": "dev-master",
+		"symfony/console": "^5.0@dev"
 	},
 	"autoload": {
 		"psr-4": {

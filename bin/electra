@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+require __DIR__.'/../../autoload.php';
+
+use Electra\Cli\Electra\Commands\Migrate\MigrateAllCliCommand;
+use Electra\Cli\Electra\Commands\Migrate\MigrateMakeCliCommand;
+use Electra\Cli\Electra\Commands\Migrate\MigrateRefreshCliCommand;
+use Electra\Cli\Electra\Commands\Migrate\MigrateStatusCliCommand;
+use Electra\Cli\Electra\Commands\Migrate\MigrateRollbackCliCommand;
+use Electra\Electra;
+use Symfony\Component\Console\Application;
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+try {
+	$application = new Application('Electra Cli', '1.0');
+
+	$externalPackages = [
+			'migrate' => '\Electra\Migrate\ElectraMigrate@getCliCommands'
+	];
+
+	// For each package
+	foreach ($externalPackages as $packageName => $cliCommandsGetter)
+	{
+		[$fqns, $method] = explode('@', $cliCommandsGetter);
+		$commands = $fqns::$method();
+		$application->addCommands($commands);
+	}
+
+  $application->run();
+}
+catch (\Exception $exception) {
+  echo "Exception thrown: " . $exception->getMessage() . PHP_EOL;
+  echo "File: " . $exception->getFile() . PHP_EOL;
+  echo "Line: " . $exception->getLine() . PHP_EOL;
+  echo "Stack Trace: " . $exception->getTraceAsString() . PHP_EOL;
+}
