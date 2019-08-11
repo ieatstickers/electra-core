@@ -9,4 +9,7 @@ abstract class AbstractResponse
   {
     return json_encode($this);
   }
+
+  /** @return $this */
+  public abstract static function create();
 }

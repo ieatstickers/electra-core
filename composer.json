@@ -15,7 +15,8 @@
 	],
 	"require": {
 		"electra/utility": "dev-master",
-		"symfony/console": "^4.3"
+		"symfony/console": "^4.3",
+		"ext-json": "*"
 	},
 	"autoload": {
 		"psr-4": {
