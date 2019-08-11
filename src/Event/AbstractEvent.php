@@ -1,10 +1,10 @@
 <?php
 
-namespace Electra\Core\Task;
+namespace Electra\Core\Event;
 
 use Electra\Utility\Classes;
 
-abstract class AbstractTask
+abstract class AbstractEvent
 {
   /** @return string */
   abstract public function getPayloadClass(): string;
@@ -20,9 +20,9 @@ abstract class AbstractTask
     if (get_class($payload) !== $this->getPayloadClass())
     {
       $payloadClassName = Classes::getClassName(get_class($payload));
-      $taskClassName = Classes::getClassName(self::class);
+      $eventClassName = Classes::getClassName(self::class);
 
-      throw new \Exception("Invalid payload passed to {$taskClassName}. Expected {$this->getPayloadClass()}, got {$payloadClassName}");
+      throw new \Exception("Invalid payload passed to {$eventClassName}. Expected {$this->getPayloadClass()}, got {$payloadClassName}");
     }
 
     // Validate the payload - will throw an exception if required fields and types are not set

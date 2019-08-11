@@ -1,6 +1,6 @@
 <?php
 
-namespace Electra\Core\Task;
+namespace Electra\Core\Event;
 
 abstract class AbstractResponse
 {

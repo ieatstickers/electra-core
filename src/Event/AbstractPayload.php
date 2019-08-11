@@ -1,23 +1,22 @@
 <?php
 
-namespace Electra\Core\Task;
+namespace Electra\Core\Event;
 
 use Electra\Utility\Arrays;
 use Electra\Utility\Classes;
 
 abstract class AbstractPayload
 {
-  /**
-   * @return array
-   */
+  /** @return $this */
+  public abstract static function create();
+
+  /** @return array */
   protected function getRequiredProperties(): array
   {
     return [];
   }
 
-  /**
-   * @return array
-   */
+  /** @return array */
   protected function getPropertyTypes(): array
   {
     return [];
