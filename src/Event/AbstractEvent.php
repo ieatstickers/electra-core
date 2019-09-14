@@ -4,7 +4,7 @@ namespace Electra\Core\Event;
 
 use Electra\Utility\Classes;
 
-abstract class AbstractEvent
+abstract class AbstractEvent implements EventInterface
 {
   /** @return string */
   abstract public function getPayloadClass(): string;
