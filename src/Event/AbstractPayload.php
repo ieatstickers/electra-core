@@ -34,7 +34,14 @@ abstract class AbstractPayload
     // For each property
     foreach ($this as $propertyName => $propertyValue)
     {
-      $expectedType = Arrays::getByKey($propertyName, $propertyTypes);
+      $expectedTypeValue = Arrays::getByKey($propertyName, $propertyTypes);
+      $expectedTypes = null;
+
+      if ($expectedTypeValue)
+      {
+        $expectedTypes = explode('|', $expectedTypeValue);
+      }
+
       $suppliedType = gettype($this->{$propertyName});
 
       // If it's null && required
@@ -49,29 +56,31 @@ abstract class AbstractPayload
       // If it's not null
       elseif (!is_null($this->{$propertyName}))
       {
-        if (!$expectedType)
+        if (!$expectedTypes)
         {
           continue;
         }
 
-        if (
-          // Not correct class
-          (
-            $suppliedType == 'object'
-            && !($this->{$propertyName} instanceof $expectedType)
-          )
-          ||
-          // Not correct type
-          (
-            $suppliedType !== 'object'
-            && $suppliedType !== $expectedType
-          )
-        )
+        foreach ($expectedTypes as $expectedType)
         {
-          $class = Classes::getClassName(self::class);
-          throw new \Exception("Invalid payload: {$class}. Property '$propertyName' should be of type $expectedType - $suppliedType supplied.");
+          if (
+            // Not correct class
+            (
+              $suppliedType == 'object'
+              && !($this->{$propertyName} instanceof $expectedType)
+            )
+            ||
+            // Not correct type
+            (
+              $suppliedType !== 'object'
+              && $suppliedType !== $expectedType
+            )
+          )
+          {
+            $class = Classes::getClassName(self::class);
+            throw new \Exception("Invalid payload: {$class}. Property '$propertyName' should be of type $expectedType - $suppliedType supplied.");
+          }
         }
-
       }
     }
 
