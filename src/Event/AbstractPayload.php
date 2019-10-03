@@ -61,25 +61,33 @@ abstract class AbstractPayload
           continue;
         }
 
+        $suppliedTypeIsValid = false;
+
         foreach ($expectedTypes as $expectedType)
         {
           if (
-            // Not correct class
+            // Correct class
             (
               $suppliedType == 'object'
-              && !($this->{$propertyName} instanceof $expectedType)
+              && ($this->{$propertyName} instanceof $expectedType)
             )
             ||
-            // Not correct type
+            // Correct type
             (
               $suppliedType !== 'object'
-              && $suppliedType !== $expectedType
+              && $suppliedType == $expectedType
             )
           )
           {
-            $class = Classes::getClassName(self::class);
-            throw new \Exception("Invalid payload: {$class}. Property '$propertyName' should be of type $expectedType - $suppliedType supplied.");
+            $suppliedTypeIsValid = true;
+            break;
           }
+        }
+
+        if (!$suppliedTypeIsValid)
+        {
+          $class = Classes::getClassName(self::class);
+          throw new \Exception("Invalid payload: {$class}. Property '$propertyName' should be of type $expectedTypes - $suppliedType supplied.");
         }
       }
     }
