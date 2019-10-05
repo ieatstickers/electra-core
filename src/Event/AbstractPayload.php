@@ -26,7 +26,7 @@ abstract class AbstractPayload
    * @return bool
    * @throws \Exception
    */
-  public final function validate(): bool
+  public function validate(): bool
   {
     $propertyTypes = $this->getPropertyTypes();
     $requiredProperties = $this->getRequiredProperties();
@@ -87,7 +87,8 @@ abstract class AbstractPayload
         if (!$suppliedTypeIsValid)
         {
           $class = Classes::getClassName(self::class);
-          throw new \Exception("Invalid payload: {$class}. Property '$propertyName' should be of type $expectedTypes - $suppliedType supplied.");
+          $expectedType = implode('|', $expectedTypes);
+          throw new \Exception("Invalid payload: {$class}. Property '$propertyName' should be of type $expectedType - $suppliedType supplied.");
         }
       }
     }
