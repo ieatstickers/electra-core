@@ -11,9 +11,34 @@
 		{
 			"type": "vcs",
 			"url":  "https://github.com/ieatstickers/electra-utility.git"
+		},
+		{
+			"type": "vcs",
+			"url":  "https://github.com/ieatstickers/electra-jwt.git"
+		},
+		{
+			"type": "vcs",
+			"url":  "https://github.com/ieatstickers/electra-acl.git"
+		},
+		{
+			"type": "vcs",
+			"url":  "https://github.com/ieatstickers/electra-config.git"
+		},
+		{
+			"type": "vcs",
+			"url":  "https://github.com/ieatstickers/electra-dal.git"
+		},
+		{
+			"type": "vcs",
+			"url":  "https://github.com/ieatstickers/electra-migrate.git"
 		}
 	],
 	"require": {
+		"electra/acl": "dev-master",
+		"electra/config": "dev-master",
+		"electra/dal": "dev-master",
+		"electra/jwt": "dev-master",
+		"electra/migrate": "dev-master",
 		"electra/utility": "dev-master",
 		"symfony/console": "^4.3",
 		"ext-json": "*"
