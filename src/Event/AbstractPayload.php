@@ -22,6 +22,12 @@ abstract class AbstractPayload
     return [];
   }
 
+  /** @return bool */
+  protected function validateAccess(): bool
+  {
+    return true;
+  }
+
   /**
    * @return bool
    * @throws \Exception
@@ -93,6 +99,6 @@ abstract class AbstractPayload
       }
     }
 
-    return true;
+    return $this->validateAccess();
   }
 }
