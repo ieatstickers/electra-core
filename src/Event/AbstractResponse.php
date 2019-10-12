@@ -4,6 +4,8 @@ namespace Electra\Core\Event;
 
 abstract class AbstractResponse
 {
+  protected function __construct() {}
+
   /** @return string */
   public function serialize(): string
   {

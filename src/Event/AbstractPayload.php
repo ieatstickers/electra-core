@@ -7,6 +7,8 @@ use Electra\Utility\Classes;
 
 abstract class AbstractPayload
 {
+  protected function __construct() {}
+
   /** @return $this */
   public abstract static function create();
 
