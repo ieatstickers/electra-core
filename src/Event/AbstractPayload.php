@@ -52,9 +52,15 @@ abstract class AbstractPayload
         ->addMetaData('payload', json_encode($this));
     }
 
+    if ($token->getRequiredClaim('ownerType') == 'system')
+    {
+      return true;
+    }
+
     $accessPayload = GetAllAccessPayload::create();
     $accessPayload->ownerId = $token->getRequiredClaim('ownerId');
     $accessPayload->ownerType = $token->getRequiredClaim('ownerType');
+
     $accessResponse = ElectraAclEvents::getAllAccess($accessPayload);
 
     return $accessResponse->hasAccess(
