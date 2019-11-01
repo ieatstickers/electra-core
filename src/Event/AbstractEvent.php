@@ -14,7 +14,7 @@ abstract class AbstractEvent implements EventInterface
    * @return mixed
    * @throws \Exception
    */
-  public final function execute(AbstractPayload $payload)
+  public function execute(AbstractPayload $payload)
   {
     // If incorrect payload class has been passed in
     if (get_class($payload) !== $this->getPayloadClass())
