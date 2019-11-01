@@ -5,7 +5,7 @@ namespace Electra\Core\Enum;
 use Electra\Core\Exception\ElectraException;
 use Electra\Utility\Arrays;
 
-class Enum
+class Enum implements \JsonSerializable
 {
   private $value;
 
@@ -76,6 +76,18 @@ class Enum
     }
 
     return $reflector->getConstants();
+  }
+
+  /** @return string */
+  public function __toString()
+  {
+    return $this->getValue();
+  }
+
+  /** @return string */
+  public function jsonSerialize()
+  {
+    return $this->getValue();
   }
 
 }
