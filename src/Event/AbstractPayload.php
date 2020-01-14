@@ -24,7 +24,7 @@ abstract class AbstractPayload
   }
 
   /** @return array */
-  protected function getPropertyTypes(): array
+  public function getPropertyTypes(): array
   {
     return [];
   }
