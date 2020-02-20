@@ -2,6 +2,8 @@
 
 namespace Electra\Core\Event;
 
+use Electra\Utility\Objects;
+
 abstract class AbstractResponse
 {
   protected function __construct() {}
@@ -12,6 +14,13 @@ abstract class AbstractResponse
     return json_encode($this);
   }
 
-  /** @return $this */
-  public abstract static function create();
+  /**
+   * @param array $data
+   * @return mixed|object|null
+   * @throws \Exception
+   */
+  public static function create($data = [])
+  {
+    return Objects::hydrate(new static(), (object)$data);
+  }
 }

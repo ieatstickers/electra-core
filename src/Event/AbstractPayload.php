@@ -9,13 +9,21 @@ use Electra\Core\Exception\ElectraInvalidPayloadException;
 use Electra\Jwt\ElectraJwt;
 use Electra\Utility\Arrays;
 use Electra\Utility\Classes;
+use Electra\Utility\Objects;
 
 abstract class AbstractPayload
 {
   protected function __construct() {}
 
-  /** @return $this */
-  public abstract static function create();
+  /**
+   * @param array $data
+   * @return static
+   * @throws \Exception
+   */
+  public static function create($data = [])
+  {
+    return Objects::hydrate(new static(), (object)$data);
+  }
 
   /** @return array */
   protected function getRequiredProperties(): array
