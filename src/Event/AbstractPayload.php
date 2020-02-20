@@ -2,10 +2,7 @@
 
 namespace Electra\Core\Event;
 
-use Electra\Acl\Event\Access\GetAll\GetAllAccessPayload;
-use Electra\Acl\Event\ElectraAclEvents;
 use Electra\Core\Exception\ElectraAccessDeniedException;
-use Electra\Core\Exception\ElectraInvalidPayloadException;
 use Electra\Jwt\ElectraJwt;
 use Electra\Utility\Arrays;
 use Electra\Utility\Classes;
@@ -41,40 +38,6 @@ abstract class AbstractPayload
   protected function validateAccess(): bool
   {
     return true;
-  }
-
-  /**
-   * @param int $resourceId
-   * @param string $resourceType
-   * @return bool
-   * @throws \Exception
-   */
-  protected function hasAccess(int $resourceId, string $resourceType): bool
-  {
-    $token = ElectraJwt::getToken();
-
-    if (!$token)
-    {
-      throw (new ElectraInvalidPayloadException('No token found. Event cannot be executed without an authenticated user.'))
-        ->addMetaData('payloadClass', Classes::getClassName(self::class))
-        ->addMetaData('payload', json_encode($this));
-    }
-
-    if ($token->getRequiredClaim('ownerType') == 'system')
-    {
-      return true;
-    }
-
-    $accessPayload = GetAllAccessPayload::create();
-    $accessPayload->ownerId = $token->getRequiredClaim('ownerId');
-    $accessPayload->ownerType = $token->getRequiredClaim('ownerType');
-
-    $accessResponse = ElectraAclEvents::getAllAccess($accessPayload);
-
-    return $accessResponse->hasAccess(
-      $resourceId,
-      $resourceType
-    );
   }
 
   /**

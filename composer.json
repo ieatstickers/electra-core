@@ -18,10 +18,6 @@
 		},
 		{
 			"type": "vcs",
-			"url":  "https://github.com/ieatstickers/electra-acl.git"
-		},
-		{
-			"type": "vcs",
 			"url":  "https://github.com/ieatstickers/electra-config.git"
 		},
 		{
@@ -34,7 +30,6 @@
 		}
 	],
 	"require": {
-		"electra/acl": "dev-master",
 		"electra/config": "dev-master",
 		"electra/dal": "dev-master",
 		"electra/jwt": "dev-master",
