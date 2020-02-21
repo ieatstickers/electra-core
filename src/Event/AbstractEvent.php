@@ -25,7 +25,7 @@ abstract class AbstractEvent implements EventInterface
       throw new \Exception("Invalid payload passed to {$eventClassName}. Expected {$this->getPayloadClass()}, got {$payloadClassName}");
     }
 
-    // Validate the payload - will throw an exception if required fields and types are not set
+    // Validate the payload - will throw an exception if required fields and/or types are not set
     $payload->validate();
 
     return $this->process($payload);

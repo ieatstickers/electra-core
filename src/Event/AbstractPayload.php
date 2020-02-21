@@ -2,10 +2,7 @@
 
 namespace Electra\Core\Event;
 
-use Electra\Core\Exception\ElectraAccessDeniedException;
-use Electra\Jwt\ElectraJwt;
 use Electra\Utility\Arrays;
-use Electra\Utility\Classes;
 use Electra\Utility\Objects;
 
 abstract class AbstractPayload
@@ -32,12 +29,6 @@ abstract class AbstractPayload
   public function getPropertyTypes(): array
   {
     return [];
-  }
-
-  /** @return bool */
-  protected function validateAccess(): bool
-  {
-    return true;
   }
 
   /**
@@ -68,8 +59,7 @@ abstract class AbstractPayload
         && in_array($propertyName, $requiredProperties)
       )
       {
-        $class = Classes::getClassName(self::class);
-        throw new \Exception("Invalid payload: {$class}. Property not set: $propertyName");
+        throw new \Exception("Invalid payload: Property not set: $propertyName");
       }
       // If it's not null
       elseif (!is_null($this->{$propertyName}))
@@ -104,19 +94,10 @@ abstract class AbstractPayload
 
         if (!$suppliedTypeIsValid)
         {
-          $class = Classes::getClassName(self::class);
           $expectedType = implode('|', $expectedTypes);
-          throw new \Exception("Invalid payload: {$class}. Property '$propertyName' should be of type $expectedType - $suppliedType supplied.");
+          throw new \Exception("Invalid payload. Property '$propertyName' should be of type $expectedType - $suppliedType supplied.");
         }
       }
-    }
-
-    if (!$this->validateAccess())
-    {
-      throw (new ElectraAccessDeniedException('Access denied'))
-        ->addMetaData('payloadClass', Classes::getClassName(self::class))
-        ->addMetaData('payload', json_encode($this))
-        ->addMetaData('jwt', ElectraJwt::getToken());
     }
 
     return true;
