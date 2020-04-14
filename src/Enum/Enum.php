@@ -35,7 +35,7 @@ class Enum implements \JsonSerializable
     }
 
     // throw exception saying unrecognised value
-    throw (new ElectraException('Unrecognised enum value'))
+    throw (new ElectraException('Unrecognised enum value "' . $value . '" in ' . get_called_class()))
       ->addMetaData('enumClass', get_called_class())
       ->addMetaData('enumValue', $value);
   }
@@ -48,6 +48,11 @@ class Enum implements \JsonSerializable
    */
   public static function __callStatic($name, $arguments)
   {
+    if ($name == 'create()')
+    {
+      return self::create($arguments[0]);
+    }
+
     $constantValue = Arrays::getByKey($name, self::getConstants());
 
     if (!$constantValue)
