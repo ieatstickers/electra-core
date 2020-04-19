@@ -5,9 +5,9 @@ namespace Electra\Core\MessageBag;
 class Message
 {
   /** @var string */
-  private $message;
+  public $message;
   /** @var string */
-  private $type;
+  public $type;
 
   /**
    * @param string $message
