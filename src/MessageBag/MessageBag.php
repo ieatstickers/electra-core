@@ -13,7 +13,7 @@ class MessageBag
    * @param Message $message
    * @return Collection
    */
-  public function addMessage(Message $message): Collection
+  public static function addMessage(Message $message): Collection
   {
     if (!self::$messages)
     {
