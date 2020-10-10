@@ -2,11 +2,13 @@
 
 namespace Electra\Core\Event;
 
-interface EventInterface
+use Electra\Core\Context\ContextAwareInterface;
+
+interface EventInterface extends ContextAwareInterface
 {
   /** @return string */
-  public function getPayloadClass(): string;
-  
+  public function getPayloadClass(): ?string;
+
   /**
    * @param AbstractPayload $payload
    * @return mixed

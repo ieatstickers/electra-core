@@ -2,31 +2,47 @@
 
 namespace Electra\Core\Event;
 
+use Electra\Core\Context\ContextAware;
 use Electra\Utility\Classes;
 
 abstract class AbstractEvent implements EventInterface
 {
+  use ContextAware;
+
   /** @return string */
-  abstract public function getPayloadClass(): string;
+  public function getPayloadClass(): ?string
+  {
+    return null;
+  }
 
   /**
    * @param AbstractPayload $payload
    * @return mixed
    * @throws \Exception
    */
-  public function execute(AbstractPayload $payload)
+  public function execute($payload)
   {
     // If incorrect payload class has been passed in
-    if (get_class($payload) !== $this->getPayloadClass())
+    if ($this->getPayloadClass())
     {
-      $payloadClassName = Classes::getClassName(get_class($payload));
       $eventClassName = Classes::getClassName(self::class);
 
-      throw new \Exception("Invalid payload passed to {$eventClassName}. Expected {$this->getPayloadClass()}, got {$payloadClassName}");
+      if (!$payload)
+      {
+        throw new \Exception("No payload passed to {$eventClassName}. Expected {$this->getPayloadClass()}.");
+      }
+
+      if (get_class($payload) !== $this->getPayloadClass())
+      {
+        $payloadClassName = Classes::getClassName(get_class($payload));
+
+        throw new \Exception("Invalid payload passed to {$eventClassName}. Expected {$this->getPayloadClass()}, got {$payloadClassName}");
+      }
+
+      // Validate the payload - will throw an exception if required fields and/or types are not set
+      $payload->validate();
     }
 
-    // Validate the payload - will throw an exception if required fields and/or types are not set
-    $payload->validate();
 
     return $this->process($payload);
   }
