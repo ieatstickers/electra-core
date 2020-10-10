@@ -11,14 +11,6 @@
 		{
 			"type": "vcs",
 			"url":  "https://github.com/ieatstickers/electra-utility.git"
-		},
-		{
-			"type": "vcs",
-			"url":  "https://github.com/ieatstickers/electra-config.git"
-		},
-		{
-			"type": "vcs",
-			"url":  "https://github.com/ieatstickers/electra-dal.git"
 		}
 	],
 	"require": {
