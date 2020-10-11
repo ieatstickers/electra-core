@@ -4,7 +4,7 @@ namespace Electra\Core\Context;
 
 class Context
 {
-  /** @var Context */
+  /** @var ContextInterface */
   private static $context;
 
   /**
@@ -22,8 +22,8 @@ class Context
     return new static();
   }
 
-  /** @return Context */
-  public static function getContext(): ?Context
+  /** @return ContextInterface */
+  public static function getContext(): ?ContextInterface
   {
     return self::$context;
   }

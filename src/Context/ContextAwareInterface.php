@@ -4,11 +4,11 @@ namespace Electra\Core\Context;
 
 interface ContextAwareInterface
 {
-  /** @return Context */
+  /** @return ContextInterface */
   public function getContext();
 
   /**
-   * @param Context $context
+   * @param ContextInterface $context
    *
    * @return $this
    */

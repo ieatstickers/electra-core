@@ -4,16 +4,17 @@ namespace Electra\Core\Context;
 
 trait ContextAware
 {
-  /** @var Context */
+  /** @var ContextInterface */
   private $context;
 
-  public function getContext()
+  /** @return ContextInterface */
+  public function getContext(): ContextInterface
   {
     return $this->context;
   }
 
   /**
-   * @param Context $context
+   * @param ContextInterface $context
    *
    * @return $this
    */
