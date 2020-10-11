@@ -2,17 +2,17 @@
 
 namespace Electra\Core\Context;
 
-use Electra\Core\Http\Request;
-
 class Context
 {
-  /** @var Request */
-  protected $request;
+  /** @var Context */
+  private static $context;
 
   /**
    * Context constructor.
    */
-  protected function __construct() {}
+  protected function __construct() {
+    Context::setContext($this);
+  }
 
   /**
    * @return static
@@ -22,16 +22,18 @@ class Context
     return new static();
   }
 
-  /**
-   * @return Request
-   */
-  public function request(): Request
+  /** @return Context */
+  public static function getContext(): ?Context
   {
-    if (!$this->request)
-    {
-      $this->request = Request::capture();
-    }
-
-    return $this->request;
+    return self::$context;
   }
+
+  /**
+   * @param Context $context
+   */
+  public static function setContext($context)
+  {
+    self::$context = $context;
+  }
+
 }
