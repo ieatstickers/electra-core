@@ -2,6 +2,8 @@
 
 namespace Electra\Core\Event;
 
+use Electra\Core\Event\Type\TypeInterface;
+use Electra\Core\Exception\ElectraException;
 use Electra\Utility\Arrays;
 use Electra\Utility\Objects;
 
@@ -25,7 +27,7 @@ abstract class AbstractPayload
     return [];
   }
 
-  /** @return array */
+  /** @return TypeInterface[] */
   public function getPropertyTypes(): array
   {
     return [];
@@ -40,7 +42,17 @@ abstract class AbstractPayload
     $propertyTypes = $this->getPropertyTypes();
     $requiredProperties = $this->getRequiredProperties();
 
-    // For each property
+    // If any of the required properties are missing, throw an exception
+    foreach ($requiredProperties as $requiredProperty)
+    {
+      if (!isset($this->{$requiredProperty}))
+      {
+        throw (new ElectraException("Invalid payload - missing property."))
+          ->addMetaData('property', $requiredProperty);
+      }
+    }
+
+    // If any of the properties present are not the correct type, throw an exeption
     foreach ($this as $propertyName => $propertyValue)
     {
       $expectedTypeValue = Arrays::getByKey($propertyName, $propertyTypes);
@@ -48,55 +60,39 @@ abstract class AbstractPayload
 
       if ($expectedTypeValue)
       {
-        $expectedTypes = explode('|', $expectedTypeValue);
+        /** @var TypeInterface[] $expectedTypes */
+        $expectedTypes = is_array($expectedTypeValue) ? $expectedTypeValue : [$expectedTypeValue];
       }
 
-      $suppliedType = gettype($this->{$propertyName});
-
-      // If it's null && required
-      if (
-        is_null($this->{$propertyName})
-        && in_array($propertyName, $requiredProperties)
-      )
+      if (is_null($propertyValue) || !$expectedTypes)
       {
-        throw new \Exception("Invalid payload: Property not set: $propertyName");
+        continue;
       }
-      // If it's not null
-      elseif (!is_null($this->{$propertyName}))
+
+      $suppliedTypeIsValid = false;
+
+      foreach ($expectedTypes as $expectedType)
       {
-        if (!$expectedTypes)
+        if ($expectedType->validate($propertyValue))
         {
-          continue;
+          $suppliedTypeIsValid = true;
+          break;
+        }
+      }
+
+      if (!$suppliedTypeIsValid)
+      {
+        $displayableTypes = [];
+
+        foreach ($expectedTypes as $type)
+        {
+          $displayableTypes[] = $type->getType();
         }
 
-        $suppliedTypeIsValid = false;
+        $expectedType = implode(' | ', $displayableTypes);
+        $suppliedType = gettype($propertyValue);
 
-        foreach ($expectedTypes as $expectedType)
-        {
-          if (
-            // Correct class
-            (
-              $suppliedType == 'object'
-              && ($this->{$propertyName} instanceof $expectedType)
-            )
-            ||
-            // Correct type
-            (
-              $suppliedType !== 'object'
-              && $suppliedType == $expectedType
-            )
-          )
-          {
-            $suppliedTypeIsValid = true;
-            break;
-          }
-        }
-
-        if (!$suppliedTypeIsValid)
-        {
-          $expectedType = implode('|', $expectedTypes);
-          throw new \Exception("Invalid payload. Property '$propertyName' should be of type $expectedType - $suppliedType supplied.");
-        }
+        throw new \Exception("Invalid payload. Property '$propertyName' should be of type $expectedType - $suppliedType supplied.");
       }
     }
 
