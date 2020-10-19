@@ -13,6 +13,21 @@ class FloatType implements TypeInterface
   /**
    * @param mixed $value
    *
+   * @return float
+   */
+  public function cast($value)
+  {
+    if (!is_numeric($value))
+    {
+      return $value;
+    }
+
+    return (float)$value;
+  }
+
+  /**
+   * @param mixed $value
+   *
    * @return bool
    */
   public function validate($value): bool

@@ -18,6 +18,21 @@ class ArrayType implements TypeInterface
   }
 
   /**
+   * @param mixed $value
+   *
+   * @return array
+   */
+  public function cast($value)
+  {
+    if (!is_string($value))
+    {
+      return $value;
+    }
+
+    return json_decode($value, true);
+  }
+
+  /**
    * @param TypeInterface|null $arrayItemType
    *
    * @return ArrayType

@@ -13,6 +13,16 @@ class StringType implements TypeInterface
   /**
    * @param mixed $value
    *
+   * @return string
+   */
+  public function cast($value)
+  {
+    return (string)$value;
+  }
+
+  /**
+   * @param mixed $value
+   *
    * @return bool
    */
   public function validate($value): bool

@@ -18,6 +18,16 @@ class ClassType implements TypeInterface
   }
 
   /**
+   * @param mixed $value
+   *
+   * @return mixed
+   */
+  public function cast($value)
+  {
+    return $value;
+  }
+
+  /**
    * @param string $fqns
    *
    * @return ClassType

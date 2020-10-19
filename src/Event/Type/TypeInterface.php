@@ -7,6 +7,13 @@ interface TypeInterface
   /**
    * @param mixed $value
    *
+   * @return mixed
+   */
+  public function cast($value);
+
+  /**
+   * @param mixed $value
+   *
    * @return bool
    */
   public function validate($value): bool;
