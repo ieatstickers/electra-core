@@ -4,7 +4,7 @@ namespace Electra\Core\Event\Type;
 
 class ArrayType implements TypeInterface
 {
-  /** @var string */
+  /** @var TypeInterface */
   protected $arrayItemType;
 
   /**
@@ -24,12 +24,27 @@ class ArrayType implements TypeInterface
    */
   public function cast($value)
   {
-    if (!is_string($value))
+    $initialValue = $value;
+
+    if (is_string($value))
     {
-      return $value;
+      $value = json_decode($value, true);
     }
 
-    return json_decode($value, true);
+    if (!is_array($value))
+    {
+      return $initialValue;
+    }
+
+    if ($this->arrayItemType)
+    {
+      foreach ($value as $key => $itemValue)
+      {
+        $value[$key] = $this->arrayItemType->cast($itemValue);
+      }
+    }
+
+    return $value;
   }
 
   /**
