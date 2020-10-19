@@ -2,7 +2,7 @@
 
 namespace Electra\Core\MessageBag;
 
-use Electra\Dal\Data\Collection;
+use Electra\Utility\Collection;
 
 class MessageBag
 {
