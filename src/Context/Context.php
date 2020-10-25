@@ -2,7 +2,7 @@
 
 namespace Electra\Core\Context;
 
-class Context
+class Context implements ContextInterface
 {
   /** @var ContextInterface */
   private static $context;
