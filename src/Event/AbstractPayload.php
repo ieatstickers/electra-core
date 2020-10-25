@@ -34,6 +34,16 @@ abstract class AbstractPayload
   }
 
   /**
+   * @param string $name
+   *
+   * @return string | integer | array
+   */
+  public function get(string $name)
+  {
+    return Objects::getProperty($name, $this);
+  }
+
+  /**
    * @return bool
    * @throws \Exception
    */
