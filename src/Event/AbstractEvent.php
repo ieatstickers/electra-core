@@ -2,12 +2,25 @@
 
 namespace Electra\Core\Event;
 
+use Electra\Core\Context\Context;
 use Electra\Core\Context\ContextAware;
+use Electra\Core\Context\ContextInterface;
 use Electra\Utility\Classes;
 
 abstract class AbstractEvent implements EventInterface
 {
   use ContextAware;
+
+  /** @return ContextInterface|null */
+  public function getContext()
+  {
+    if(!$this->context)
+    {
+      $this->context = Context::getContext();
+    }
+
+    return $this->context;
+  }
 
   /** @return string */
   public function getPayloadClass(): ?string
