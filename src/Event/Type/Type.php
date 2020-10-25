@@ -15,6 +15,12 @@ class Type
     return StringType::create();
   }
 
+  /** @return BooleanType */
+  public static function boolean()
+  {
+    return BooleanType::create();
+  }
+
   /** @return IntegerType */
   public static function integer()
   {
