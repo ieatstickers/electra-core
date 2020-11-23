@@ -10,6 +10,9 @@ use Electra\Utility\Classes;
 abstract class AbstractEvent implements EventInterface
 {
   use ContextAware;
+  protected $useStaticCache = false;
+  /** @var array  */
+  protected static $responseCache = [];
 
   /** @return ContextInterface|null */
   public function getContext()
@@ -35,6 +38,32 @@ abstract class AbstractEvent implements EventInterface
    */
   public function execute($payload)
   {
+    $cacheKey = null;
+
+    // If static caching is enabled
+    if ($this->useStaticCache)
+    {
+      // Generate cache key
+      $cacheKey = md5(json_encode($payload));
+
+      // Set keys in response cache
+      if (!isset(static::$responseCache[static::class]))
+      {
+        static::$responseCache[static::class] = [];
+      }
+
+      if (!isset(static::$responseCache[static::class][$cacheKey]))
+      {
+        static::$responseCache[static::class][$cacheKey] = null;
+      }
+
+      // If a cached response exists, return it
+      if (static::$responseCache[static::class][$cacheKey])
+      {
+        return static::$responseCache[static::class][$cacheKey];
+      }
+    }
+
     // If incorrect payload class has been passed in
     if ($this->getPayloadClass())
     {
@@ -56,8 +85,15 @@ abstract class AbstractEvent implements EventInterface
       $payload->validate();
     }
 
+    $eventResponse = $this->process($payload);
 
-    return $this->process($payload);
+    // If static caching is enabled, set it
+    if ($this->useStaticCache)
+    {
+      static::$responseCache[static::class][$cacheKey] = $eventResponse;
+    }
+
+    return $eventResponse;
   }
 
   /**
