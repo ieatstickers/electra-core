@@ -2,6 +2,7 @@
 
 namespace Electra\Core\Event;
 
+use Carbon\Carbon;
 use Electra\Core\Context\Context;
 use Electra\Core\Context\ContextAware;
 use Electra\Core\Context\ContextInterface;
@@ -38,6 +39,8 @@ abstract class AbstractEvent implements EventInterface
    */
   public function execute($payload)
   {
+    $start = Carbon::now();
+
     $cacheKey = null;
 
     // If static caching is enabled
@@ -60,6 +63,14 @@ abstract class AbstractEvent implements EventInterface
       // If a cached response exists, return it
       if (static::$responseCache[static::class][$cacheKey])
       {
+        $end = Carbon::now();
+        EventLog::log([
+          'event' => static::class,
+          'payload' => json_encode($payload),
+          'fromCache' => true,
+          'timestamp' => $end->toDateTimeString(),
+          'duration' => $end->diffInMilliseconds($start) . 'ms'
+        ]);
         return static::$responseCache[static::class][$cacheKey];
       }
     }
@@ -92,6 +103,15 @@ abstract class AbstractEvent implements EventInterface
     {
       static::$responseCache[static::class][$cacheKey] = $eventResponse;
     }
+
+    $end = Carbon::now();
+    EventLog::log([
+      'event' => static::class,
+      'payload' => json_encode($payload),
+      'fromCache' => false,
+      'timestamp' => $end->toDateTimeString(),
+      'duration' => $end->diffInMilliseconds($start) . 'ms'
+    ]);
 
     return $eventResponse;
   }
