@@ -5,13 +5,15 @@ namespace Electra\Core\Context;
 class Context implements ContextInterface
 {
   /** @var ContextInterface */
-  private static $context;
+  protected static $context;
+  /** @var string */
+  protected static $projectRoot;
 
   /**
    * Context constructor.
    */
   protected function __construct() {
-    Context::setContext($this);
+    static::setContext($this);
   }
 
   /**
@@ -25,7 +27,7 @@ class Context implements ContextInterface
   /** @return ContextInterface */
   public static function getContext(): ?ContextInterface
   {
-    return self::$context;
+    return static::$context;
   }
 
   /**
@@ -33,7 +35,22 @@ class Context implements ContextInterface
    */
   public static function setContext($context)
   {
-    self::$context = $context;
+    static::$context = $context;
   }
+
+  /** @return string */
+  public static function getProjectRoot(): string
+  {
+    return static::$projectRoot;
+  }
+
+  /**
+   * @param string $projectRoot
+   */
+  public static function setProjectRoot($projectRoot)
+  {
+    static::$projectRoot = $projectRoot;
+  }
+
 
 }
