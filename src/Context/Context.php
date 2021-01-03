@@ -7,7 +7,7 @@ class Context implements ContextInterface
   /** @var ContextInterface */
   protected static $context;
   /** @var string */
-  protected static $projectRoot;
+  protected $projectRoot;
 
   /**
    * Context constructor.
@@ -39,17 +39,21 @@ class Context implements ContextInterface
   }
 
   /** @return string */
-  public static function getProjectRoot(): string
+  public function getProjectRoot(): string
   {
-    return static::$projectRoot;
+    return $this->projectRoot;
   }
 
   /**
    * @param string $projectRoot
+   *
+   * @return $this
    */
-  public static function setProjectRoot($projectRoot)
+  public function setProjectRoot(string $projectRoot)
   {
-    static::$projectRoot = $projectRoot;
+    $this->projectRoot = $projectRoot;
+
+    return $this;
   }
 
 
