@@ -14,7 +14,7 @@
 		}
 	],
 	"require": {
-		"electra/utility": "dev-master",
+		"electra/utility": "dev-php8.1-upgrade",
 		"symfony/console": "^4.3",
 		"ext-json": "*"
 	},
