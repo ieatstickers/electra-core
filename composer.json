@@ -2,6 +2,7 @@
 	"name": "electra/core",
 	"bin": ["bin/electra"],
 	"minimum-stability": "dev",
+  "prefer-stable": true,
 	"authors": [
 		{
 			"name": "Mike Burke"
