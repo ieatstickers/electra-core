@@ -32,7 +32,7 @@ class Context implements ContextInterface
   /** @return string */
   public function getProjectRoot(): string
   {
-    return __DIR__ . "/../../../../";
+    return __DIR__ . "/../../../../../";
   }
 
 }
